@@ -340,17 +340,21 @@ var Mustache = function() {
     var ich = {
         VERSION: "0.9",
         templates: {},
-        
+
         // grab jquery or zepto if it's there
         $: (typeof window !== 'undefined') ? window.jQuery || window.Zepto || null : null,
-        
+
+        allowReload: false,
+
         // public function for adding templates
         // We're enforcing uniqueness to avoid accidental template overwrites.
         // If you want a different template, it should have a different name.
         addTemplate: function (name, templateString) {
-            if (ich[name]) throw "Invalid name: " + name + ".";
-            if (ich.templates[name]) throw "Template \" + name + \" exists";
-            
+            if (!ich.allowReload) {
+                if (ich[name]) throw "Invalid name: " + name + ".";
+                if (ich.templates[name]) throw "Template \" + name + \" exists";
+            }
+
             ich.templates[name] = templateString;
             ich[name] = function (data, raw) {
                 data = data || {};
@@ -358,7 +362,7 @@ var Mustache = function() {
                 return (ich.$ && !raw) ? ich.$(result) : result;
             };
         },
-        
+
         // clears all retrieval functions and empties caches
         clearAll: function () {
             for (var key in ich.templates) {
@@ -366,21 +370,21 @@ var Mustache = function() {
             }
             ich.templates = {};
         },
-        
+
         // clears/grabs
         refresh: function () {
             ich.clearAll();
             ich.grabTemplates();
         },
-        
+
         // grabs templates from the DOM and caches them.
         // Loop through and add templates.
-        // Whitespace at beginning and end of all templates inside <script> tags will 
-        // be trimmed. If you want whitespace around a partial, add it in the parent, 
+        // Whitespace at beginning and end of all templates inside <script> tags will
+        // be trimmed. If you want whitespace around a partial, add it in the parent,
         // not the partial. Or do it explicitly using <br/> or &nbsp;
-        grabTemplates: function () {        
-            var i, 
-                scripts = document.scripts, 
+        grabTemplates: function () {
+            var i,
+                scripts = document.scripts,
                 l = scripts.length,
                 script,
                 trash = [];
@@ -396,7 +400,7 @@ var Mustache = function() {
             }
         }
     };
-    
+
     // attach it to the window
     if (typeof require !== 'undefined') {
         module.exports = ich;
@@ -404,7 +408,7 @@ var Mustache = function() {
         // else make global
         window.ich = ich;
     }
-    
+
     if (typeof document !== 'undefined') {
         if (ich.$) {
             ich.$(function () {
@@ -416,6 +420,6 @@ var Mustache = function() {
             });
         }
     }
-        
+
 })()
 })();
