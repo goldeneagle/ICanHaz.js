@@ -11,7 +11,7 @@ ICH_NOMS = ICanHaz-no-mustache.js
 ICH_NOMS_MIN = ICanHaz-no-mustache.min.js
 
 MAIN_FILE = source/main.js
-MUSTACHE_FILE ?= source/mustache.js
+MUSTACHE_FILE ?= vendor/mustache/mustache.js
 BASE_FILES = $(MUSTACHE_FILE) $(MAIN_FILE)
 
 all: $(ICH) $(ICH_MIN) $(ICH_NOMS) $(ICH_NOMS_MIN)

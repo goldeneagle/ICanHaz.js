@@ -3,10 +3,8 @@ ICanHaz.js version 0.9 -- by @HenrikJoreteg
 More info at: http://icanhazjs.com
 */
 (function ($) {
-/*!
-  mustache.js -- Logic-less templates in JavaScript
-
-  by @janl (MIT Licensed, https://github.com/janl/mustache.js/blob/master/LICENSE).
+/*
+  mustache.js — Logic-less templates in JavaScript
 
   See http://mustache.github.com/ for more info.
 */
@@ -54,7 +52,7 @@ var Mustache = function() {
       Sends parsed lines
     */
     send: function(line) {
-      if(line != "") {
+      if(line !== "") {
         this.buffer.push(line);
       }
     },
@@ -70,7 +68,7 @@ var Mustache = function() {
 
       var that = this;
       var regex = new RegExp(this.otag + "%([\\w-]+) ?([\\w]+=[\\w]+)?" +
-            this.ctag);
+            this.ctag, "g");
       return template.replace(regex, function(match, pragma, options) {
         if(!that.pragmas_implemented[pragma]) {
           throw({message: 
@@ -251,11 +249,12 @@ var Mustache = function() {
     */
     escape: function(s) {
       s = String(s === null ? "" : s);
-      return s.replace(/&(?!\w+;)|["<>\\]/g, function(s) {
+      return s.replace(/&(?!\w+;)|["'<>\\]/g, function(s) {
         switch(s) {
         case "&": return "&amp;";
         case "\\": return "\\\\";
-        case '"': return '\"';
+        case '"': return '&quot;';
+        case "'": return '&#39;';
         case "<": return "&lt;";
         case ">": return "&gt;";
         default: return s;
@@ -312,7 +311,7 @@ var Mustache = function() {
 
   return({
     name: "mustache.js",
-    version: "0.3.0",
+    version: "0.3.1-dev",
 
     /*
       Turns a template and view into HTML
@@ -328,7 +327,8 @@ var Mustache = function() {
       }
     }
   });
-}();/*!
+}();
+/*!
   ICanHaz.js -- by @HenrikJoreteg
 */
 /*global  */
