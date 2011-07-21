@@ -59,19 +59,19 @@ More info at: http://icanhazjs.com
         // not the partial. Or do it explicitly using <br/> or &nbsp;
         grabTemplates: function () {
             var i,
-                scripts = document.scripts,
-                l = scripts.length,
+                scripts = document.getElementsByTagName('script'),
+                l = (scripts !== undefined ? scripts.length : 0),
                 script,
                 trash = [];
             for (i = 0; i < l; i++) {
                 script = scripts[i];
-                if (script && script.innerText && script.id && (script.type === "text/html" || script.type === "text/x-icanhaz")) {
-                    ich.addTemplate(script.id, trim(script.innerText));
+                if (script && script.innerHTML && script.id && (script.type === "text/html" || script.type === "text/x-icanhaz")) {
+                    ich.addTemplate(script.id, trim(script.innerHTML));
                     trash.unshift(script);
                 }
             }
             for (i = 0, l = trash.length; i < l; i++) {
-                trash[i].parentElement.removeChild(trash[i]);
+                trash[i].parentNode.removeChild(trash[i]);
             }
         }
     };
@@ -92,7 +92,7 @@ More info at: http://icanhazjs.com
         } else {
             document.addEventListener('DOMContentLoaded', function () {
                 ich.grabTemplates();
-            });
+            }, false);
         }
     }
 
