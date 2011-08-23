@@ -10,7 +10,7 @@ More info at: http://icanhazjs.com
 (function () {
     function trim(stuff) {
         if (''.trim) return stuff.trim();
-        else return s.replace(/^\s+/, '').replace(/\s+$/, '');
+        else return stuff.replace(/^\s+/, '').replace(/\s+$/, '');
     }
     var ich = {
         VERSION: "0.9",
